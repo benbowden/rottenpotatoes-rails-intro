@@ -31,6 +31,12 @@ class MoviesController < ApplicationController
       @titleHighlight = ""
       @releaseDateHighlight = "hilite"
     
+    elsif params[:ratings].present?
+      @movies = Movie.where(rating: params[:ratings].keys)
+      
+
+    
+      
     else
       @movies = Movie.all
       
