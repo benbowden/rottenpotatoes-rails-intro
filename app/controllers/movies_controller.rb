@@ -1,4 +1,5 @@
 class MoviesController < ApplicationController
+  
 
   def movie_params
     params.require(:movie).permit(:title, :rating, :description, :release_date)
@@ -11,7 +12,35 @@ class MoviesController < ApplicationController
   end
 
   def index
-    @movies = Movie.all
+    
+    @all_ratings = ['G','PG','PG-13','R']
+    
+    @byTitle = false
+    @titleHighlight = ""
+    @releaseDateHighlight = ""
+    
+    if params[:id] == "title_header"
+      @movies = Movie.order('movies.title asc')
+    
+      @titleHighlight = "hilite"
+      @releaseDateHighlight = ""
+        
+    elsif params[:id] == "release_date_header"
+      @movies = Movie.order('movies.release_date asc')
+      
+      @titleHighlight = ""
+      @releaseDateHighlight = "hilite"
+    
+    else
+      @movies = Movie.all
+      
+    end
+    
+
+  
+    
+     
+
   end
 
   def new
@@ -41,5 +70,7 @@ class MoviesController < ApplicationController
     flash[:notice] = "Movie '#{@movie.title}' deleted."
     redirect_to movies_path
   end
+  
+
 
 end
