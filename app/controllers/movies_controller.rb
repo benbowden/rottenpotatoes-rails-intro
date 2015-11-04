@@ -30,10 +30,11 @@ class MoviesController < ApplicationController
   end
 
   def new
+    @movie = Movie.new
   end
 
   def create
-    @movie = Movie.create!(params[:movie])
+    @movie = Movie.create(movie_params)
     flash[:notice] = "#{@movie.title} was successfully created."
     redirect_to movies_path
   end
@@ -68,5 +69,11 @@ class MoviesController < ApplicationController
     chosen_ratings = session[:ratings]
     return true if chosen_ratings.nil?
     chosen_ratings.include? rating
+  end
+  
+  private
+  
+  def movie_params
+    params.require(:movie).permit(:title, :rating, :description, :release_date)
   end
 end
